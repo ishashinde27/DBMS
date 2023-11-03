@@ -1,0 +1,93 @@
+
+
+
+SQL> connect system
+Enter password:
+Connected.
+SQL> create table library2(roll_no number(5),name varchar2(10),date_of_issue date,name_of_book varchar2(10),status varchar2(10));
+
+Table created.
+
+SQL> insert into library2 values(1,'Rutu','1-June-19','Java','nonreturn');
+
+1 row created.
+
+SQL> insert into library2 values(2,'Vishu','6-March-19','C++','return');
+
+1 row created.
+
+SQL> insert into library2 values(3,'Babu','8-July-20','Python','nonreturn');
+
+1 row created.
+
+SQL> select *from library2;
+
+   ROLL_NO NAME       DATE_OF_I NAME_OF_BO STATUS
+---------- ---------- --------- ---------- ----------
+         1 Rutu       01-JUN-19 Java       nonreturn
+         2 Vishu      06-MAR-19 C++        return
+         3 Babu       08-JUL-20 Python     nonreturn
+
+SQL> create table fine4(roll_no number(10),date_of_return date,amount number(10));
+
+Table created.
+
+SQL>  insert into fine4 values(1,'26-Dec-19',60);
+
+1 row created.
+
+SQL> insert into fine4 values(2,'17-Nov-20',40);
+
+1 row created.
+
+SQL> select *from fine4;
+
+   ROLL_NO DATE_OF_R     AMOUNT
+---------- --------- ----------
+         1 26-DEC-19         60
+         2 17-NOV-20         40
+
+
+SQL>  declare
+  2   rno number(3):=&roll_no;
+  3   bname varchar2(10):='&name_of_book';
+  4   no_day number(10);
+  5   issue_date date;
+  6   fine4amt number(5):=0;
+  7   begin
+  8   select date_of_issue into issue_date from library where roll_no=rno;
+  9   select sysdate-to_date(issue_date)days into no_day from dual;
+ 10   if(no_day>=15 and no_day<=30)then
+ 11   fine4amt:=no_day*5;
+ 12   elsif no_day>30 then
+ 13   fine4amt:=no_day*50;
+ 14   end if;
+ 15   update library set status='return'where roll_no=rno;
+ 16   if fine4amt>0 then
+ 17   insert into fine4 values(rno,sysdate,fine4amt);
+ 18   end if;
+ 19   EXCEPTION
+ 20   WHEN no_data_found THEN
+ 21  dbms_output.put_line('record not found');
+ 22  end;
+ 23  /
+Enter value for roll_no: 2
+old   2:  rno number(3):=&roll_no;
+new   2:  rno number(3):=2;
+Enter value for name_of_book: python
+old   3:  bname varchar2(10):='&name_of_book';
+new   3:  bname varchar2(10):='python';
+ select date_of_issue into issue_date from library where roll_no=rno;
+                                           *
+ERROR at line 8:
+ORA-06550: line 8, column 44:
+PL/SQL: ORA-00942: table or view does not exist
+ORA-06550: line 8, column 2:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 15, column 9:
+PL/SQL: ORA-00942: table or view does not exist
+ORA-06550: line 15, column 2:
+PL/SQL: SQL Statement ignored
+
+
+SQL>
