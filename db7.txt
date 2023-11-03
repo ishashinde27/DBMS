@@ -1,0 +1,80 @@
+
+SQL> connect system
+Enter password:
+Connected.
+
+SQL> create table lib4(bno number(10),bname varchar2(10),auther varchar2(10),allowed_days number(10));
+
+Table created.
+
+SQL> insert into lib4 values(1,'java','mr.jagtap',10);
+
+1 row created.
+
+SQL> insert into lib4 values(2,'toc','mr.mohite',15);
+
+1 row created.
+
+SQL> insert into lib4 values(3,'dbms','mr.dhumal',12);
+
+1 row created.
+
+SQL> select * from lib4;
+
+       BNO BNAME      AUTHER     ALLOWED_DAYS
+---------- ---------- ---------- ------------
+         1 java       mr.jagtap            10
+         2 toc        mr.mohite            15
+         3 dbms       mr.dhumal            12
+
+SQL> create table lib1_audit(bno number(10),old_allowed_days number(10),new_alloed_days
+  2  number(10));
+
+Table created.
+
+SQL>  create or replace trigger trg2
+  2   before update or delete on lib4
+  3   for each row
+  4   begin
+  5   insert into lib1_audit values(:new.bno,:old.allowed_days,:new.allowed_days);
+  6   end;
+  7  /
+
+Trigger created.
+
+SQL> update lib4 set allowed_days=13 where bno=1;
+
+1 row updated.
+
+SQL> select * from lib4;
+
+       BNO BNAME      AUTHER     ALLOWED_DAYS
+---------- ---------- ---------- ------------
+         1 java       mr.jagtap            13
+         2 toc        mr.mohite            15
+         3 dbms       mr.dhumal            12
+
+SQL> select * from lib1_audit;
+
+       BNO OLD_ALLOWED_DAYS NEW_ALLOED_DAYS
+---------- ---------------- ---------------
+         1               10              13
+
+SQL> delete from lib4 where bno=2;
+
+1 row deleted.
+
+SQL> select * from lib4;
+
+       BNO BNAME      AUTHER     ALLOWED_DAYS
+---------- ---------- ---------- ------------
+         1 java       mr.jagtap            13
+         3 dbms       mr.dhumal            12
+
+SQL> select * from lib1_audit;
+
+       BNO OLD_ALLOWED_DAYS NEW_ALLOED_DAYS
+---------- ---------------- ---------------
+         1               10              13
+                         15
+

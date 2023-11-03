@@ -1,0 +1,82 @@
+
+SQL> connect system
+Enter password:
+Connected.
+SQL> create table old_book1(id number(5),name varchar2(20));
+
+Table created.
+
+SQL> insert into old_book values('101','java');
+
+1 row created.
+
+SQL> insert into old_book1 values('101','java');
+
+1 row created.
+
+SQL> insert into old_book1 values('102','dbms');
+
+1 row created.
+
+SQL> select * from old_book1;
+
+        ID NAME
+---------- --------------------
+       101 java
+       102 dbms
+
+
+sQL> create table new_book1(id number(4),name varchar(10));
+
+Table created.
+
+SQL> insert into new_book1 values('103','m3');
+
+1 row created.
+
+SQL> insert into new_book1 values('101','java');
+
+1 row created.
+
+SQL> select * from new_book1;
+
+        ID NAME
+---------- ----------
+       103 m3
+       101 java
+
+
+SQL>  Declare
+  2     cursor cur1 is
+  3     select id,name from old_book1;
+  4     cursor cur2 is
+  5     select id from new_book1;
+  6     r number(5);
+  7     i number(5);
+  8     nm varchar2(20);
+  9     begin
+ 10     open cur1;
+ 11     open cur2;
+ 12     loop
+ 13     fetch cur1 into i,nm;
+ 14     fetch cur2 into r;
+ 15     exit when cur1%found=false;
+ 16     if r<>i then
+ 17     insert into new_book1 values(i,nm);
+ 18     end if;
+ 19     end loop;
+ 20     close cur1;
+ 21     end;
+ 22    /
+
+PL/SQL procedure successfully completed.
+
+SQL>    select * from new_book1;
+
+        ID NAME
+---------- ----------
+       103 m3
+       101 java
+       101 java
+       102 dbms
+

@@ -1,0 +1,127 @@
+db.createCollection('employee')
+{ "ok" : 1 }
+
+db.employee.insert({emp_id:101,name:'Sonam',job:'manager',salary:10000})
+WriteResult({ "nInserted" : 1 })
+
+db.employee.insert({emp_id:102,name:'Siddhi',job:'Designer',salary:20000})
+WriteResult({ "nInserted" : 1 })
+
+db.employee.insert({emp_id:103,name:'Rutuja',job:'Developer',salary:30000})
+WriteResult({ "nInserted" : 1 })
+
+db.employee.insert({emp_id:104,name:'Alisha',job:'tester',salary:35000})
+WriteResult({ "nInserted" : 1 })
+
+db.employee.find().pretty()
+{
+	"_id" : ObjectId("654497682a93e911bce161ab"),
+	"emp_id" : 101,
+	"name" : "Sonam",
+	"job" : "manager",
+	"salary" : 10000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ac"),
+	"emp_id" : 102,
+	"name" : "Siddhi",
+	"job" : "Designer",
+	"salary" : 20000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ad"),
+	"emp_id" : 103,
+	"name" : "Rutuja",
+	"job" : "Developer",
+	"salary" : 30000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ae"),
+	"emp_id" : 104,
+	"name" : "Alisha",
+	"job" : "tester",
+	"salary" : 35000
+}
+
+db.employee.remove({emp_id:102})
+WriteResult({ "nRemoved" : 1 })
+
+db.employee.find().pretty()
+{
+	"_id" : ObjectId("654497682a93e911bce161ab"),
+	"emp_id" : 101,
+	"name" : "Sonam",
+	"job" : "manager",
+	"salary" : 10000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ad"),
+	"emp_id" : 103,
+	"name" : "Rutuja",
+	"job" : "Developer",
+	"salary" : 30000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ae"),
+	"emp_id" : 104,
+	"name" : "Alisha",
+	"job" : "tester",
+	"salary" : 35000
+}
+
+db.employee.update({emp_id:103,name:'Rutuja'},{$set:{emp_id:105,name:'Siddhi'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+db.employee.find().pretty()
+{
+	"_id" : ObjectId("654497682a93e911bce161ab"),
+	"emp_id" : 101,
+	"name" : "Sonam",
+	"job" : "manager",
+	"salary" : 10000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ad"),
+	"emp_id" : 105,
+	"name" : "Siddhi",
+	"job" : "Developer",
+	"salary" : 30000
+}
+{
+	"_id" : ObjectId("654497682a93e911bce161ae"),
+	"emp_id" : 104,
+	"name" : "Alisha",
+	"job" : "tester",
+	"salary" : 35000
+}
+
+ db.employee.find({emp_id:104,name:'Alisha'}).pretty()
+{
+	"_id" : ObjectId("654497682a93e911bce161ae"),
+	"emp_id" : 104,
+	"name" : "Alisha",
+	"job" : "tester",
+	"salary" : 35000
+}
+
+db.employee.find({$or:[{'emp_id':105,'name':'Siddhi'}]}).pretty()
+{
+	"_id" : ObjectId("654497682a93e911bce161ad"),
+	"emp_id" : 105,
+	"name" : "Siddhi",
+	"job" : "Developer",
+	"salary" : 30000
+}
+
+db.employee.find({},{'emp_id':105,'name':'Siddhi'}).sort({'emp_id':-1})
+{ "_id" : ObjectId("654497682a93e911bce161ad"), "emp_id" : 105, "name" : "Siddhi" }
+{ "_id" : ObjectId("654497682a93e911bce161ae"), "emp_id" : 104, "name" : "Siddhi" }
+{ "_id" : ObjectId("654497682a93e911bce161ab"), "emp_id" : 101, "name" : "Siddhi" }
+
+db.employee.find({},{'emp_id':105,'name':'Siddhi'}).sort({'emp_id':1})
+{ "_id" : ObjectId("654497682a93e911bce161ab"), "emp_id" : 101, "name" : "Siddhi" }
+{ "_id" : ObjectId("654497682a93e911bce161ae"), "emp_id" : 104, "name" : "Siddhi" }
+{ "_id" : ObjectId("654497682a93e911bce161ad"), "emp_id" : 105, "name" : "Siddhi" }
+
+db.employee.drop()
+true
