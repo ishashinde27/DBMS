@@ -1,0 +1,231 @@
+
+
+SQL> create table lib(id int,name varchar(10),purpose varchar(20));
+SP2-0640: Not connected
+SQL> connect system
+Enter password:
+Connected.
+
+SQL> create table lib1(id int,name varchar(10),purpose varchar(20));
+
+Table created.
+
+SQL> insert into lib1(id,name,purpose)values(1,'pooja','book');
+
+1 row created.
+
+SQL> insert into lib1(id,name,purpose)values(2,'isha','internet');
+
+1 row created.
+
+SQL> insert into lib1(id,name,purpose)values(3,'gayu','bookreturn');
+
+1 row created.
+
+SQL> select *from lib1;
+
+        ID NAME       PURPOSE
+---------- ---------- --------------------
+         1 pooja      book
+         2 isha       internet
+         3 gayu       bookreturn
+
+SQL> alter table lib1 add class varchar(20);
+
+Table altered.
+
+SQL> select *from lib1;
+
+        ID NAME       PURPOSE              CLASS
+---------- ---------- -------------------- --------------------
+         1 pooja      book
+         2 isha       internet
+         3 gayu       bookreturn
+
+SQL> update lib1 set class='te' where id=1;
+
+1 row updated.
+
+SQL> update lib1 set class='te' where id=2;
+
+1 row updated.
+
+SQL> update lib1 set class='te' where id=3;
+
+1 row updated.
+
+SQL>
+SQL> select *from lib1;
+
+        ID NAME       PURPOSE              CLASS
+---------- ---------- -------------------- --------------------
+         1 pooja      book                 te
+         2 isha       internet             te
+         3 gayu       bookreturn           te
+
+SQL> select *from lib1 where id in (1,3);
+
+        ID NAME       PURPOSE              CLASS
+---------- ---------- -------------------- --------------------
+         1 pooja      book                 te
+         3 gayu       bookreturn           te
+
+
+
+SQL> select distinct(class) from lib1;
+
+CLASS
+--------------------
+te
+
+SQL> alter table lib1 add price int;
+
+Table altered.
+
+SQL> select *from lib1;
+
+        ID NAME       PURPOSE              CLASS                     PRICE
+---------- ---------- -------------------- -------------------- ----------
+         1 pooja      book                 te
+         2 isha       internet             te
+         3 gayu       bookreturn           te
+
+SQL> update lib1 set price=300 where id=1;
+
+1 row updated.
+
+SQL> update lib1 set price=330 where id=2;
+
+1 row updated.
+
+SQL> update lib1 set price=420 where id=3;
+
+1 row updated.
+
+SQL> select *from lib1;
+
+        ID NAME       PURPOSE              CLASS                     PRICE
+---------- ---------- -------------------- -------------------- ----------
+         1 pooja      book                 te                          300
+         2 isha       internet             te                          330
+         3 gayu       bookreturn           te                          420
+
+SQL> select min(id) from lib1;
+
+   MIN(ID)
+----------
+         1
+
+SQL> select max(id) from lib1;
+
+   MAX(ID)
+----------
+         3
+
+SQL> select sum(id) from lib1;
+
+   SUM(ID)
+----------
+         6
+
+SQL> select sum(price) from lib1;
+
+SUM(PRICE)
+----------
+      1050
+
+SQL> select count(name) from lib1;
+
+COUNT(NAME)
+-----------
+          3
+
+SQL> insert into lib1(id,name,purpose,class,price)values(4,'namu','scale','te',401);
+
+1 row created.
+
+SQL> insert into lib1(id,name,purpose,class,price)values(5,'samu','online','te',441);
+
+1 row created.
+
+SQL> insert into lib1(id,name,purpose,class,price)values(6,'gamu','line','te',501);
+
+1 row created.
+
+SQL> select *from lib1;
+
+        ID NAME       PURPOSE              CLASS                     PRICE
+---------- ---------- -------------------- -------------------- ----------
+         1 pooja      book                 te                          300
+         2 isha       internet             te                          330
+         3 gayu       bookreturn           te                          420
+         4 namu       scale                te                          401
+         5 samu       online               te                          441
+         6 gamu       line                 te                          501
+
+6 rows selected.
+
+SQL> create table clg(id int,name varchar(10),class varchar(20));
+
+Table created.
+
+SQL> insert into clg(id,name,class)values(5,'samu','te');
+
+1 row created.
+
+
+SQL> insert into clg(id,name,class)values(6,'gamu','te');
+
+1 row created.
+
+SQL> insert into clg(id,name,class)values(4,'namu','te');
+
+1 row created.
+
+SQL> select *from clg;
+
+        ID NAME       CLASS
+---------- ---------- --------------------
+         5 samu       te
+         6 gamu       te
+         4 namu       te
+
+SQL> select class from clg union select class from lib1;
+
+CLASS
+--------------------
+te
+
+SQL> select name from clg union all select class from lib1;
+
+NAME
+--------------------
+samu
+gamu
+namu
+te
+te
+te
+te
+te
+te
+
+9 rows selected.
+
+SQL> select name from clg union all select name from lib1;
+
+NAME
+----------
+samu
+gamu
+namu
+pooja
+isha
+gayu
+namu
+samu
+gamu
+
+9 rows selected.
+
+SQL>
