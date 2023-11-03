@@ -1,0 +1,52 @@
+db.createCollection("order")
+{ "ok" : 1 }
+
+db.order.insert({id:1,amount:200,status:'A'})
+WriteResult({ "nInserted" : 1 })
+
+db.order.insert({id:1,amount:500,status:'A'})
+WriteResult({ "nInserted" : 1 })
+
+db.order.insert({id:2,amount:800,status:'A'})
+WriteResult({ "nInserted" : 1 })
+
+db.order.insert({id:4,amount:800,status:'A'})
+WriteResult({ "nInserted" : 1 })
+
+db.order.insert({id:4,amount:800,status:'D'})
+WriteResult({ "nInserted" : 1 })
+
+db.order.find().pretty()
+{
+	"_id" : ObjectId("6544a168621a193032a9c9ba"),
+	"id" : 1,
+	"amount" : 200,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("6544a168621a193032a9c9bb"),
+	"id" : 1,
+	"amount" : 500,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("6544a168621a193032a9c9bc"),
+	"id" : 2,
+	"amount" : 800,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("6544a168621a193032a9c9bd"),
+	"id" : 4,
+	"amount" : 800,
+	"status" : "A"
+}
+{
+	"_id" : ObjectId("6544a168621a193032a9c9be"),
+	"id" : 4,
+	"amount" : 800,
+	"status" : "D"
+}
+
+db.order.mapReduce(function(){emit(this.id,this.amount);},function(key,values){return Array.sum(values)},{query:{status:'A'},out:'order_totals'})
+{ "result" : "order_totals", "ok" : 1 }
