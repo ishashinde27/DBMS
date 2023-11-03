@@ -1,0 +1,167 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Nov 2 18:54:54 2023
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect system
+Enter password:
+Connected.
+
+SQL> create table Employee1(e_id int,ename varchar(10),esalary int,address varchar(10));
+
+Table created.
+
+SQL> insert into Employee1(e_id,ename,esalary,address)values(1,'isha',40900,'pune');
+
+1 row created.
+
+SQL> insert into Employee1(e_id,ename,esalary,address)values(2,'nik',4900,'baramati');
+
+1 row created.
+
+SQL> insert into Employee1(e_id,ename,esalary,address)values(3,'sita',4400,'bhor');
+
+1 row created.
+
+SQL> insert into Employee1(e_id,ename,esalary,address)values(4,'gita',4560,'puna');
+
+1 row created.
+
+SQL> select *from Employee1;
+
+      E_ID ENAME         ESALARY ADDRESS
+---------- ---------- ---------- ----------
+         1 isha            40900 pune
+         2 nik              4900 baramati
+         3 sita             4400 bhor
+         4 gita             4560 puna
+
+
+
+
+SQL> alter table Employee1 add date_of_birth date;
+
+Table altered.
+
+SQL> select *from Employee1;
+
+      E_ID ENAME         ESALARY ADDRESS    DATE_OF_B
+---------- ---------- ---------- ---------- ---------
+         1 isha            40900 pune
+         2 nik              4900 baramati
+         3 sita             4400 bhor
+         4 gita             4560 puna
+
+
+
+
+SQL> alter table Employee1 drop column date_of_birth;
+
+Table altered.
+
+SQL> select *from Employee1;
+
+      E_ID ENAME         ESALARY ADDRESS
+---------- ---------- ---------- ----------
+         1 isha            40900 pune
+         2 nik              4900 baramati
+         3 sita             4400 bhor
+         4 gita             4560 puna
+
+
+
+
+
+SQL> create view v5 as select e_id,ename,esalary from Employee1;
+
+View created.
+
+SQL> select *from v5;
+
+      E_ID ENAME         ESALARY
+---------- ---------- ----------
+         1 isha            40900
+         2 nik              4900
+         3 sita             4400
+         4 gita             4560
+
+
+
+
+SQL> update v5 set ename='sita' where e_id=1;
+
+1 row updated.
+
+SQL> select *from Employee1;
+
+      E_ID ENAME         ESALARY ADDRESS
+---------- ---------- ---------- ----------
+         1 sita            40900 pune
+         2 nik              4900 baramati
+         3 sita             4400 bhor
+         4 gita             4560 puna
+
+SQL> drop view v5;
+
+View dropped.
+
+SQL> select *from Employee1;
+
+      E_ID ENAME         ESALARY ADDRESS
+---------- ---------- ---------- ----------
+         1 sita            40900 pune
+         2 nik              4900 baramati
+         3 sita             4400 bhor
+         4 gita             4560 puna
+
+SQL> select *from v5;
+select *from v5
+             *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+
+SQL> create index i3 on Employee1(esalary);
+
+Index created.
+
+SQL> show index from Employee1;
+SP2-0158: unknown SHOW option "index"
+SP2-0158: unknown SHOW option "from"
+SP2-0158: unknown SHOW option "Employee1"
+SQL>
+
+
+SQL> create unique index ind1 on Employee1(address);
+
+Index created.
+
+sQL> create table s1 (roll int,name varchar(20));
+
+Table created.
+
+SQL> insert into s1(roll,name)values(1,'isha');
+
+1 row created.
+
+SQL> select *from s1;
+
+      ROLL NAME
+---------- --------------------
+         1 isha
+
+SQL> truncate table s1;
+
+Table truncated.
+
+SQL> select * from s1;
+
+no rows selected
+
+SQL> create synonym sys1 FOR Employee1;
+
+Synonym created.
+
+SQL>
