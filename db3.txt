@@ -1,0 +1,107 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Nov 2 21:43:20 2023
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect system
+Enter password:
+Connected.
+
+SQL> create table book1(book_id int,book_name varchar(10),author varchar(10),publisher varchar(10));
+
+Table created.
+
+SQL> insert into book1(book_id,book_name,author,publisher)values(101,'spos','niki','techneo');
+
+1 row created.
+
+SQL> insert into book1(book_id,book_name,author,publisher)values(102,'dbms','viki','techknowl');
+
+1 row created.
+
+SQL> insert into book1(book_id,book_name,author,publisher)values(103,'iot','chiki','nirali');
+
+1 row created.
+
+SQL> select *from book1;
+
+   BOOK_ID BOOK_NAME  AUTHOR     PUBLISHER
+---------- ---------- ---------- ----------
+       101 spos       niki       techneo
+       102 dbms       viki       techknowl
+       103 iot        chiki      nirali
+
+SQL> create table stud(roll_no int,name varchar(10),book_name varchar(10));
+
+Table created.
+
+
+SQL> insert into stud(roll_no,name,book_name)values(1,'isha','dbms');
+
+1 row created.
+
+SQL> insert into stud(roll_no,name,book_name)values(2,'disha','iot');
+
+1 row created.
+
+SQL> insert into stud(roll_no,name,book_name)values(3,'nisha','spos');
+
+1 row created.
+
+SQL> select *from stud;
+
+   ROLL_NO NAME       BOOK_NAME
+---------- ---------- ----------
+         1 isha       dbms
+         2 disha      iot
+         3 nisha      spos
+
+
+
+SQL> select book1.book_id,author from book1 inner join stud on book1.book_name=stud.book_name;
+
+   BOOK_ID AUTHOR
+---------- ----------
+       101 niki
+       102 viki
+       103 chiki
+
+
+
+
+SQL> select book_id,author from book1 inner join stud on book1.book_name=stud.book_name;
+
+   BOOK_ID AUTHOR
+---------- ----------
+       101 niki
+       102 viki
+       103 chiki
+
+
+
+
+SQL> select book1.book_id,book1.book_name,book1.author,stud.roll_no,stud.name from book1 left outer join stud on book1.book_name=stud.book_name;
+
+   BOOK_ID BOOK_NAME  AUTHOR        ROLL_NO NAME
+---------- ---------- ---------- ---------- ----------
+       102 dbms       viki                1 isha
+       103 iot        chiki               2 disha
+       101 spos       niki                3 nisha
+
+SQL> select book1.book_id,book1.book_name,book1.author,stud.roll_no,stud.name from book1 right outer join stud on book1.book_name=stud.book_name;
+
+   BOOK_ID BOOK_NAME  AUTHOR        ROLL_NO NAME
+---------- ---------- ---------- ---------- ----------
+       101 spos       niki                3 nisha
+       102 dbms       viki                1 isha
+       103 iot        chiki               2 disha
+
+
+
+SQL> SELECT book_name FROM book1 WHERE book_id = (SELECT book_id FROM book1 WHERE author = 'viki');
+
+BOOK_NAME
+----------
+dbms
+
+SQL>
